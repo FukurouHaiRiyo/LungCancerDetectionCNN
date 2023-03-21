@@ -193,12 +193,12 @@ history = model.fit(
 
 
 # evaluate the network
-print_color('Evaluating network...', (0, 0, 0), (255, 255, 255))
+print('Evaluating network...', (0, 0, 0), (255, 255, 255))
 predictions = model.predict_generator(test_gen, steps=test_steps)
 print(classification_report(test_gen.classes, predictions.argmax(axis=1), target_names=test_gen.class_indices.keys()))
 
 # save the model to disk
-print_color('Saving model...', (0, 0, 0), (255, 255, 255))
+print('Saving model...', (0, 0, 0), (255, 255, 255))
 model.save('model.h5')
 
 
