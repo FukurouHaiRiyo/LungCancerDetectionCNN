@@ -20,7 +20,7 @@ import keras
 import itertools
 
 #set the path to the dataset folder, set batch_size, epochs and image height and width
-PATH = '/home/andrei/Desktop/LungCancerDetection/lung_image_sets'
+PATH = '/home/andrei/Desktop/Licenta/lung_image_sets'
 batch_size = 64
 epochs = 30
 IMG_HEIGHT = 180
@@ -140,7 +140,7 @@ classes=list(train_gen.class_indices.keys())
 class_count=len(classes)
 
 
-def display_all_images(umages):
+def display_all_images(images):
       plt.figure(figsize=(10,10))
       for i in range(9):
             plt.subplot(3,3,i+1)
@@ -179,7 +179,7 @@ model.add(Dropout(0.25))
 
 #compile the model
 print('Compiling model...')
-opt = Adam(learning_rate=INIT_LR, decay=INIT_LR / epochs)
+opt = Adam(learning_rate=INIT_LR)
 model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 #train the model
@@ -193,12 +193,12 @@ history = model.fit(
 
 
 # evaluate the network
-print_color('Evaluating network...', (0, 0, 0), (255, 255, 255))
+print('Evaluating network...', (0, 0, 0), (255, 255, 255))
 predictions = model.predict_generator(test_gen, steps=test_steps)
 print(classification_report(test_gen.classes, predictions.argmax(axis=1), target_names=test_gen.class_indices.keys()))
 
 # save the model to disk
-print_color('Saving model...', (0, 0, 0), (255, 255, 255))
+print('Saving model...', (0, 0, 0), (255, 255, 255))
 model.save('model.h5')
 
 
