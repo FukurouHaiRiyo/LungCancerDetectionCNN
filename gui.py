@@ -32,7 +32,7 @@ def classify(file_path):
     image = image.resize((224, 224))
     image = np.expand_dims(image, axis=0)
     image = np.array(image)
-    image = image/255
+    image = image/255.0
     pred = model.predict([image])
     print(pred[0][0])
     print(pred[0])
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     upload.pack(side=BOTTOM, pady=50)
     sign_image.pack(side=BOTTOM, expand=True)
     label.pack(side=BOTTOM, expand=True)
-    heading = Label(top, text="CatsVSDogs Classification",pady=20, font=('arial', 20, 'bold'))
+    heading = Label(top, text="Detectarea celuleor anormale la nivelul plamanilor",pady=20, font=('arial', 20, 'bold'))
     heading.configure(background='#CDCDCD', foreground='#364156')
     heading.pack()
     top.mainloop()

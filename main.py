@@ -10,6 +10,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, Dropout, MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import mean_squared_logarithmic_error
+from tensorflow.keras.callbacks import EarlyStopping
 
 # sklearn imports
 from sklearn.model_selection import train_test_split
@@ -21,18 +23,11 @@ import itertools
 
 #set the path to the dataset folder, set batch_size, epochs and image height and width
 PATH = '/home/andrei/Desktop/Licenta/lung_image_sets'
-batch_size = 64
-epochs = 30
+batch_size = 32
+epochs = 8
 IMG_HEIGHT = 180
 IMG_WIDTH = 180
 INIT_LR = 1e-3    # initial learning rate
-
-'''
-Abreviations: 
-      Lung adenocarcinoma -> lung_aca (Adenocarcinoma of the lung is the most common type of lung cancer, and like other forms of lung cancer, it is characterized by distinct cellular and molecular features)
-      Lung squamous cell carcinoma -> lung_scc (Lung squamous cell carcinoma (SCC) is a type of non-small cell (NSCLC) cancer that occurs when abnormal lung cells multiply out of control and form a tumor)
-      Lung benign tissue -> lung_n (Lung benign tissue is an abnormal growth of tissue that serves no purpose and is found not to be cancerous. Hamartomas are the most common type of benign lung tumor and the third most common cause of solitary pulmonary nodules)
-'''
 
 '''First, I'm creating a list of file paths and a list of labels. Next, I'm creating 
 a Pandas Series object from the file paths and labels. Then, we're creating a Pandas 
@@ -124,7 +119,7 @@ test_gen=gen.flow_from_dataframe(
       y_col='labels', 
       target_size=img_size, 
       class_mode='categorical',
-      color_mode='rgb', shuffle=False, batch_size=test_batch_size
+      color_mode='rgb', shuffle=True, batch_size=test_batch_size
 )
 
 valid_gen=gen.flow_from_dataframe( 
@@ -179,8 +174,17 @@ model.add(Dropout(0.25))
 
 #compile the model
 print('Compiling model...')
+earlystop_callback = EarlyStopping(
+     monitor = 'val_loss',
+     min_delta = 0.001,
+     patience = 5,
+     verbose = 1,
+     restore_best_weights = True 
+)
+
 opt = Adam(learning_rate=INIT_LR)
-model.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
+model.compile(loss=mean_squared_logarithmic_error, optimizer=opt, metrics=['accuracy'])
+
 
 #train the model
 history = model.fit(
@@ -188,8 +192,11 @@ history = model.fit(
       steps_per_epoch = train_steps,
       validation_data = valid_gen,
       validation_steps = valid_steps,
-      epochs = epochs
+      epochs = epochs,
+      callbacks = [earlystop_callback]
 )
+
+best_epoch = earlystop_callback.stopped_epoch
 
 
 # evaluate the network
@@ -206,7 +213,7 @@ model.save('model.h5')
 def graph():
       plt.style.use('ggplot')
       plt.figure()
-      N = 20
+      N = 8
       plt.plot(np.arange(0, N), history.history['loss'], label='train_loss')
       plt.plot(np.arange(0, N), history.history['val_loss'], label='val_loss')
       plt.plot(np.arange(0, N), history.history['accuracy'], label='train_acc')
