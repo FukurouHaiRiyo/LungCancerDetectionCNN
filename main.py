@@ -22,7 +22,7 @@ import keras
 import itertools
 
 #set the path to the dataset folder, set batch_size, epochs and image height and width
-PATH = '/home/andrei/Desktop/Licenta/lung_image_sets'
+PATH = 'path_to_dataset'
 batch_size = 32
 epochs = 8
 IMG_HEIGHT = 180
