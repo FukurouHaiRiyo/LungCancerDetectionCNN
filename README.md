@@ -9,7 +9,7 @@ Link-ul catre dataset: https://github.com/tampapath/lung_colon_image_set
 
 * Lung squamous cell carcinoma -> lung_scc (Lung squamous cell carcinoma (SCC) is a type of non-small cell (NSCLC) cancer that occurs when abnormal lung cells multiply out of control and form a tumor)
 
-* Lung benign tissue -> lung_n (Lung benign tissue is an abnormal growth of tissue that serves no purpose and is found not to be cancerous. Hamartomas are the most common type of benign lung tumor and the third most common cause of solitary pulmonary nodules)
+* Lung benign tissue -> lung_n (Lung benign tissue is an abnormal growth of tissue that serves no purpose and is found not to be cancerous.)
 
 ## TODO
 * Improve accuracy by: 
@@ -17,7 +17,7 @@ Link-ul catre dataset: https://github.com/tampapath/lung_colon_image_set
       2. optimize the learning rate (https://www.jeremyjordan.me/nn-learning-rate/)
       3. randomizing the training data order(✔️)
       4. improve the network design
-      5. Change bianry_crossentropy to loss_mean_squared_logarithmic_error
+      5. Change bianry_crossentropy to loss_mean_squared_logarithmic_error(✔️)
 
 ## Problems
 1. binary_crossentropy da loss error foarte mare(>=2), iar val_accuracy mic(<=40%). Am incercat loss_mean_squared_logarithmic_error. 

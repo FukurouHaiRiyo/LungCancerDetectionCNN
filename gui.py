@@ -19,7 +19,7 @@ print(classes)
 
 # initialise GUI
 top = tk.Tk()
-top.geometry('800x600')
+top.geometry('900x800')
 top.title('Detectarea celuleor anormale la nivelul plamanilor')
 top.configure(background='#CDCDCD')
 label = Label(top, background='#CDCDCD', font=('arial', 15, 'bold'))
