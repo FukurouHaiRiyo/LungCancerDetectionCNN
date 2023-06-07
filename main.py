@@ -21,144 +21,137 @@ from sklearn.metrics import confusion_matrix, classification_report
 import keras
 import itertools
 
-#set the path to the dataset folder, set batch_size, epochs and image height and width
-PATH = 'path_to_dataset'
+# Set the path to the dataset folder, set batch_size, epochs and image height and width
+PATH = 'lung_image_sets'
 batch_size = 32
 epochs = 8
-IMG_HEIGHT = 180
-IMG_WIDTH = 180
-INIT_LR = 1e-3    # initial learning rate
+IMG_H = 180
+IMG_W = 180
+INIT_LR = 1e-3    # Initial learning rate
 
-'''First, I'm creating a list of file paths and a list of labels. Next, I'm creating 
-a Pandas Series object from the file paths and labels. Then, we're creating a Pandas 
-DataFrame by concatenating the Series objects. Finally, we're resetting the index of 
-the DataFrame.
-'''
-
+# Creating a list of file paths and labels
 for i, d in enumerate([PATH]):
-      paths = [] # path to each image from the dataset
-      labels = [] # label for each image from the dataset (lung_n, lung_aca and lung_scc)
-      classes = os.listdir(d)
+    paths = []  # Path to each image from the dataset
+    labels = []  # Label for each image from the dataset (lung_n, lung_aca, and lung_scc)
+    classes = os.listdir(d)
 
-      for Class in classes:
-            classPath = os.path.join(d, Class)
-            if os.path.isdir(classPath):
-                  fList = os.listdir(classPath)
-                  for f in fList:
-                        fPath = os.path.join(classPath, f)
-                        paths.append(fPath)
-                        labels.append(Class)
-      
+    for Class in classes:
+        classPath = os.path.join(d, Class)
+        if os.path.isdir(classPath):
+            fList = os.listdir(classPath)
+            for f in fList:
+                fPath = os.path.join(classPath, f)
+                paths.append(fPath)
+                labels.append(Class)
 
-      fSeries = pd.Series(paths, name='filepaths')
-      lSeries = pd.Series(labels, name='labels')
-      lung_df = pd.concat([fSeries, lSeries], axis = 1)
+    fSeries = pd.Series(paths, name='filepaths')
+    lSeries = pd.Series(labels, name='labels')
+    lung_df = pd.concat([fSeries, lSeries], axis=1)
 
-df = pd.concat([lung_df], axis = 0).reset_index(drop = True)
+df = pd.concat([lung_df], axis=0).reset_index(drop=True)
 
 print(df['labels'].value_counts())
 
-
-'''
-First, I'm creating a list called sample_list. Then, I iterate through the 
-unique values of the labels column.
-For each label, I'm creating a sample of 3000 observations. I'm appending the sample 
-to the sample_list. Finally, I'm concatenating the samples and resetting the index.
-'''
+# Creating a sample list
 sampleSize = 3000
 sampleList = []
 
 gr = df.groupby('labels')
 
 for label in df['labels'].unique():
-      labelGroup = gr.get_group(label).sample(sampleSize, replace=False, random_state=123, axis = 0)
-      sampleList.append(labelGroup)
+    labelGroup = gr.get_group(label).sample(sampleSize, replace=False, random_state=123, axis=0)
+    sampleList.append(labelGroup)
 
 df = pd.concat(sampleList, axis=0).reset_index(drop=True)
 print(len(df))
 
+# Creating train, test, and validation datasets from the original dataset
+trainSplit = 0.8
+testSplit = 0.1
+validSplit = testSplit / (1 - trainSplit)  # Splits the test data and validation data in half
 
-'''Here, I create the train, test and validation datasets from the original dataset.
-The original dataset came with all the data in one folder so the train, test and validation
-data had to be separated
-'''
-trainSplit = .8
-testSplit = .1
-validSplit = testSplit/(1-trainSplit) # splits the test data and validation data in half
-
-train_df, dummy_df = train_test_split(df, train_size = trainSplit, shuffle=True, random_state=123)
+train_df, dummy_df = train_test_split(df, train_size=trainSplit, shuffle=True, random_state=123)
 test_df, valid_df = train_test_split(dummy_df, train_size=validSplit, shuffle=True, random_state=123)
 
 print(f'Train length: {len(train_df)}\nTest length: {len(test_df)}\nValidation length: {len(valid_df)}')
 
-height=224
-width=224
-channels=3
-batch_size=32
-img_shape=(height, width, channels)
-img_size=(height, width)
-length=len(test_df)
-test_batch_size=sorted([int(length/n) for n in range(1,length+1) if length % n == 0 and length/n<=80],reverse=True)[0]  
-test_steps=int(length/test_batch_size)
-print ('test batch size: ', test_batch_size, 'test steps: ', test_steps)
+height = 224
+width = 224
+channels = 3
+batch_size = 32
+img_shape = (height, width, channels)
+img_size = (height, width)
+length = len(test_df)
+test_batch_size = sorted([int(length / n) for n in range(1, length + 1) if length % n == 0 and length / n <= 80],
+                         reverse=True)[0]
+test_steps = int(length / test_batch_size)
+print('Test batch size:', test_batch_size, 'Test steps:', test_steps)
 
 def scalar(img):
-    return img/127.5-1  # scale pixels between -1 and +1
+    return img / 127.5 - 1  # Scale pixels between -1 and +1
 
-gen=ImageDataGenerator(preprocessing_function=scalar)
-train_gen=gen.flow_from_dataframe( 
-      train_df, 
-      x_col='filepaths', 
-      y_col='labels', target_size=img_size, class_mode='categorical',
-      color_mode='rgb', shuffle=True, batch_size=batch_size
+gen = ImageDataGenerator(preprocessing_function=scalar)
+train_gen = gen.flow_from_dataframe(
+    train_df,
+    x_col='filepaths',
+    y_col='labels',
+    target_size=img_size,
+    class_mode='categorical',
+    color_mode='rgb',
+    shuffle=True,
+    batch_size=batch_size
 )
 
-test_gen=gen.flow_from_dataframe(
-      test_df,
-      x_col='filepaths', 
-      y_col='labels', 
-      target_size=img_size, 
-      class_mode='categorical',
-      color_mode='rgb', shuffle=True, batch_size=test_batch_size
+test_gen = gen.flow_from_dataframe(
+    test_df,
+    x_col='filepaths',
+    y_col='labels',
+    target_size=img_size,
+    class_mode='categorical',
+    color_mode='rgb',
+    shuffle=True,
+    batch_size=test_batch_size
 )
 
-valid_gen=gen.flow_from_dataframe( 
-      valid_df, 
-      x_col='filepaths', 
-      y_col='labels', 
-      target_size=img_size, 
-      class_mode='categorical',
-      color_mode='rgb', shuffle=True, batch_size=batch_size
+valid_gen = gen.flow_from_dataframe(
+    valid_df,
+    x_col='filepaths',
+    y_col='labels',
+    target_size=img_size,
+    class_mode='categorical',
+    color_mode='rgb',
+    shuffle=True,
+    batch_size=batch_size
 )
 
-classes=list(train_gen.class_indices.keys())
-class_count=len(classes)
+classes = list(train_gen.class_indices.keys())
+class_count = len(classes)
 
 
 def display_all_images(images):
-      plt.figure(figsize=(10,10))
-      for i in range(9):
-            plt.subplot(3,3,i+1)
-            img,label=images.next()
-            plt.imshow(img[0])
-            plt.title(classes[np.argmax(label[0])])
-            plt.axis('off')
-      plt.show()
-      return
+    plt.figure(figsize=(10, 10))
+    for i in range(9):
+        plt.subplot(3, 3, i + 1)
+        img, label = images.next()
+        plt.imshow(img[0])
+        plt.title(classes[np.argmax(label[0])])
+        plt.axis('off')
+    plt.show()
+    return
 
 display_all_images(train_gen)
 
-# train data
+# Train data
 train_steps = int(len(train_df) / batch_size)
 print(f'Train steps: {train_steps}')
 
-# test data
+# Test data
 test_steps = int(len(test_df) / test_batch_size)
-print(f'{test_steps}')
+print(f'Test steps: {test_steps}')
 
-# validation data
+# Validation data
 valid_steps = int(len(valid_df) / batch_size)
-print(f'{valid_steps}')
+print(f'Validation steps: {valid_steps}')
 
 # create the model
 model = Sequential()

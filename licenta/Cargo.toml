@@ -7,6 +7,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.71"
 csv = "1.2.2"
 dataframe = "0.1.0"
 image = "0.24.6"
@@ -14,4 +15,7 @@ itertools = "0.10.5"
 ndarray = "0.15.6"
 ndarray-rand = "0.14.0"
 rand = "0.8.5"
-tch = "0.13.0"
+tch = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/licenta/src/tch-rs"}
+
+[dev-dependencies]
+torch-sys = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/licenta/src/tch-rs/torch-sys"}
