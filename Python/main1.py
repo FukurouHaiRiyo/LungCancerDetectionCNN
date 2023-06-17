@@ -172,6 +172,6 @@ def plot_graph(history):
     plt.xlabel('Epoch #')
     plt.ylabel('Loss/Accuracy')
     plt.legend(loc='lower left')
-    plt.savefig('plot.png')
+    plt.savefig('plot1.png')
 
 plot_graph(history)
