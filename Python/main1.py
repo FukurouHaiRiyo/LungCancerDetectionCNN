@@ -157,7 +157,7 @@ print(classification_report(test_gen.classes, predictions.argmax(axis=1), target
 
 # Save the model to disk
 print('Saving model...')
-model.save('model.h5')
+model.save('modelGAN-C.h5')
 
 # Plot graph
 def plot_graph(history):
@@ -172,6 +172,6 @@ def plot_graph(history):
     plt.xlabel('Epoch #')
     plt.ylabel('Loss/Accuracy')
     plt.legend(loc='lower left')
-    plt.savefig('plot1.png')
+    plt.savefig('plotGAN-C.png')
 
 plot_graph(history)

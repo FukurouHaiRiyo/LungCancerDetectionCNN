@@ -29,19 +29,22 @@ sign_image = Label(top)
 def classify(file_path):
     global label_packed
     image = Image.open(file_path)
-    image = image.resize((224, 224))
+    image = image.resize((180, 180))
     image = np.expand_dims(image, axis=0)
     image = np.array(image)
     image = image/255.0
     pred = model.predict([image])
-    print(pred[0][0])
-    print(pred[0])
+    # print(pred[0][0])
+    # print(pred[0])
 
     lung_cancer_type = ['Lung adenocarcinoma', 'Lung squamous cell carcinoma', 'Lung benign tissue']
 
     dictionary = dict(zip(lung_cancer_type, pred[0]))
 
-    print(dictionary)
+    # print(dictionary)
+
+    max_key = max(dictionary, key=dictionary.get)
+    label.configure(text=f'{max_key} detected')
      
 
 def show_classify_button(file_path):

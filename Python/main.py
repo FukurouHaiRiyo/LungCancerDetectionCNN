@@ -199,7 +199,7 @@ print(classification_report(test_gen.classes, predictions.argmax(axis=1), target
 
 # save the model to disk
 print('Saving model...', (0, 0, 0), (255, 255, 255))
-model.save('model.h5')
+model.save('modelCNN.h5')
 
 
 #plot graph
@@ -215,7 +215,7 @@ def graph():
       plt.xlabel('Epoch #')
       plt.ylabel('Loss/Accuracy')
       plt.legend(loc='lower left')
-      plt.savefig('plot.png')
+      plt.savefig('plotCNN.png')
 
 # draw confusion matrix
 def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
