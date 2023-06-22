@@ -92,7 +92,7 @@ fn train_model(model: &SimpleCNN, train_data: &[Tensor], train_labels: &[i64]) -
 }
 
 fn load_train_labels(path: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
-    let image_files = fs::read_dir(path)?;
+    let image_files = std::fs::read_dir(path)?;
     let mut train_labels = Vec::new();
 
     for image_file in image_files {
@@ -105,7 +105,7 @@ fn load_train_labels(path: &str) -> Result<Vec<String>, Box<dyn std::error::Erro
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let train_data = load_dataset("/home/andrei/Desktop/Licenta/lung_image_sets");
+    let train_data_path = load_dataset("/home/andrei/Desktop/Licenta/lung_image_sets");
     let train_labels = load_train_labels(train_data_path)?;
     let preprocessed_train_data = preprocess_images(&train_data);
 

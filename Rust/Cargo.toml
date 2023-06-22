@@ -15,7 +15,7 @@ itertools = "0.10.5"
 ndarray = "0.15.6"
 ndarray-rand = "0.14.0"
 rand = "0.8.5"
-tch = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/licenta/src/tch-rs"}
+tch = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/Rust/src/tch-rs"}
 
 [dev-dependencies]
-torch-sys = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/licenta/src/tch-rs/torch-sys"}
+torch-sys = {version="0.13.0", path="/home/andrei/Desktop/ProiectLicenta/Rust/src/tch-rs/torch-sys"}

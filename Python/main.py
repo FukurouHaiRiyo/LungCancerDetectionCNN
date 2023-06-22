@@ -24,7 +24,7 @@ import itertools
 # Set the path to the dataset folder, set batch_size, epochs and image height and width
 PATH = '../lung_image_sets'
 batch_size = 32
-epochs = 8
+epochs = 25
 IMG_H = 180
 IMG_W = 180
 INIT_LR = 1e-3    # Initial learning rate
@@ -67,7 +67,7 @@ print(len(df))
 
 # Creating train, test, and validation datasets from the original dataset
 trainSplit = 0.8
-testSplit = 0.1
+testSplit = 0.2
 validSplit = testSplit / (1 - trainSplit)  # Splits the test data and validation data in half
 
 train_df, dummy_df = train_test_split(df, train_size=trainSplit, shuffle=True, random_state=123)
@@ -197,7 +197,7 @@ print('Evaluating network...', (0, 0, 0), (255, 255, 255))
 predictions = model.predict_generator(test_gen, steps=test_steps)
 print(classification_report(test_gen.classes, predictions.argmax(axis=1), target_names=test_gen.class_indices.keys()))
 
-# save the model to disk
+# save the model
 print('Saving model...', (0, 0, 0), (255, 255, 255))
 model.save('modelCNN.h5')
 

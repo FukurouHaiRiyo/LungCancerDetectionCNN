@@ -34,14 +34,14 @@ def classify(file_path):
     image = np.array(image)
     image = image/255.0
     pred = model.predict([image])
-    # print(pred[0][0])
-    # print(pred[0])
+    print(pred[0][0])
+    print(pred[0])
 
-    lung_cancer_type = ['Lung adenocarcinoma', 'Lung squamous cell carcinoma', 'Lung benign tissue']
+    lung_cancer_type = ['Lung aca', 'Lung scc', 'Lung n']
 
     dictionary = dict(zip(lung_cancer_type, pred[0]))
 
-    # print(dictionary)
+    print(dictionary)
 
     max_key = max(dictionary, key=dictionary.get)
     label.configure(text=f'{max_key} detected')
