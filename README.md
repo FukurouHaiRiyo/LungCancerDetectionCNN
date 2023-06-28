@@ -13,10 +13,10 @@ Link to dataset: https://github.com/tampapath/lung_colon_image_set
 
 ## TODO
  
-    -[ ] increasing the dataset size
-    -[ ] optimize the learning rate (https://www.jeremyjordan.me/nn-learning-rate/)
-    -[x] randomizing the training data order
-    -[x] improve the network design
-    -[x] Change bianry_crossentropy to loss_mean_squared_logarithmic_error
-    -[ ] used GANs implementation, slight improvement
-    -[ ] improving the model using VGG19 and a custom LRA implementation
+- [ ] increasing the dataset size
+- [ ] optimize the learning rate (https://www.jeremyjordan.me/nn-learning-rate/)
+- [x] randomizing the training data order
+- [x] improve the network design
+- [x] Change bianry_crossentropy to loss_mean_squared_logarithmic_error
+- [ ] used GANs implementation, slight improvement
+- [ ] improving the model using VGG19 and a custom LRA implementation
