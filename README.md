@@ -13,13 +13,13 @@ Link-ul catre dataset: https://github.com/tampapath/lung_colon_image_set
 
 ## TODO
 * Improve accuracy by: 
-      1. increasing the dataset size(✔️)
-      2. optimize the learning rate (https://www.jeremyjordan.me/nn-learning-rate/)
-      3. randomizing the training data order(✔️)
-      4. improve the network design(✔️)
-      5. Change bianry_crossentropy to loss_mean_squared_logarithmic_error(✔️)
-      6. used GANs implementation, slight improvement
-      7. improving the model using VGG19 and a custom LRA implementation(to be done in the future)
+      i. increasing the dataset size(✔️)
+      ii. optimize the learning rate (https://www.jeremyjordan.me/nn-learning-rate/)
+      iii. randomizing the training data order(✔️)
+      iv. improve the network design(✔️)
+      v. Change bianry_crossentropy to loss_mean_squared_logarithmic_error(✔️)
+      vi. used GANs implementation, slight improvement
+      vii. improving the model using VGG19 and a custom LRA implementation(to be done in the future)
 
 ## Problems
 1. binary_crossentropy da loss error foarte mare(>=2), iar val_accuracy mic(<=40%). Am incercat loss_mean_squared_logarithmic_error. 
