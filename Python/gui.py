@@ -6,7 +6,8 @@ from PIL import ImageTk, Image
 import numpy as np
 
 from keras.models import load_model
-model = load_model('model.h5')
+# model = load_model('modelGAN-C.h5')
+model = load_model('/home/andrei/Desktop/ProiectLicenta/Python/modelCNN.h5')
 
 classes = {
     0: 'Lung adenocarcinoma',
