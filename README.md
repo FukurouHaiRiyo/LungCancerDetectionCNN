@@ -19,6 +19,7 @@ Link-ul catre dataset: https://github.com/tampapath/lung_colon_image_set
       4. improve the network design(✔️)
       5. Change bianry_crossentropy to loss_mean_squared_logarithmic_error(✔️)
       6. used GANs implementation, slight improvement
+      7. improving the model using VGG19 and a custom LRA implementation(to be done in the future)
 
 ## Problems
 1. binary_crossentropy da loss error foarte mare(>=2), iar val_accuracy mic(<=40%). Am incercat loss_mean_squared_logarithmic_error. 
