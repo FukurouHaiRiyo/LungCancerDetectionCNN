@@ -22,7 +22,7 @@ import itertools
 
 # Set the path to the dataset folder, set batch_size, epochs and image height and width
 PATH = '/home/andrei/Desktop/ProiectLicenta/lung_image_sets'
-batch_size = 16
+batch_size = 8
 epochs = 10
 IMG_H = 180
 IMG_W = 180
@@ -49,7 +49,10 @@ gen = ImageDataGenerator(
     rescale = 1./255,
     shear_range = 0.2,
     zoom_range = 0.2,
-    horizontal_flip = True
+    horizontal_flip = True,
+    fill_mode='nearest',
+    width_shift_range=0.1,
+    height_shift_range=0.1
 )
 
 
@@ -93,101 +96,6 @@ def display_all_images(images):
 
 display_all_images(train_gen)
 
-# # Creating a list of file paths and labels
-# for i, d in enumerate([PATH]):
-#     paths = []  # Path to each image from the dataset
-#     labels = []  # Label for each image from the dataset (lung_n, lung_aca, and lung_scc)
-#     classes = os.listdir(d)
-
-#     for Class in classes:
-#         classPath = os.path.join(d, Class)
-#         if os.path.isdir(classPath):
-#             fList = os.listdir(classPath)
-#             for f in fList:
-#                 fPath = os.path.join(classPath, f)
-#                 paths.append(fPath)
-#                 labels.append(Class)
-
-#     fSeries = pd.Series(paths, name='filepaths')
-#     lSeries = pd.Series(labels, name='labels')
-#     lung_df = pd.concat([fSeries, lSeries], axis=1)
-
-# df = pd.concat([lung_df], axis=0).reset_index(drop=True)
-
-# print(df['labels'].value_counts())
-
-# # Creating a sample list
-# sampleSize = 3000
-# sampleList = []
-
-# gr = df.groupby('labels')
-
-# for label in df['labels'].unique():
-#     labelGroup = gr.get_group(label).sample(sampleSize, replace=False, random_state=123, axis=0)
-#     sampleList.append(labelGroup)
-
-# df = pd.concat(sampleList, axis=0).reset_index(drop=True)
-# print(len(df))
-
-# # Creating train, test, and validation datasets from the original dataset
-# trainSplit = 0.8
-# testSplit = 0.2
-# validSplit = testSplit / (1 - trainSplit)  # Splits the test data and validation data in half
-
-# train_df, dummy_df = train_test_split(df, train_size=trainSplit, shuffle=True, random_state=123)
-# test_df, valid_df = train_test_split(dummy_df, train_size=validSplit, shuffle=True, random_state=123)
-
-# print(f'Train length: {len(train_df)}\nTest length: {len(test_df)}\nValidation length: {len(valid_df)}')
-
-# height = 224
-# width = 224
-# channels = 3
-# batch_size = 32
-# img_shape = (height, width, channels)
-# img_size = (height, width)
-# length = len(test_df)
-# test_batch_size = sorted([int(length / n) for n in range(1, length + 1) if length % n == 0 and length / n <= 80],
-#                          reverse=True)[0]
-# test_steps = int(length / test_batch_size)
-# print('Test batch size:', test_batch_size, 'Test steps:', test_steps)
-
-# def scalar(img):
-#     return img / 127.5 - 1  # Scale pixels between -1 and +1
-
-# gen = ImageDataGenerator(preprocessing_function=scalar)
-# train_gen = gen.flow_from_dataframe(
-#     train_df,
-#     x_col='filepaths',
-#     y_col='labels',
-#     target_size=img_size,
-#     class_mode='categorical',
-#     color_mode='rgb',
-#     shuffle=True,
-#     batch_size=batch_size
-# )
-
-# test_gen = gen.flow_from_dataframe(
-#     test_df,
-#     x_col='filepaths',
-#     y_col='labels',
-#     target_size=img_size,
-#     class_mode='categorical',
-#     color_mode='rgb',
-#     shuffle=True,
-#     batch_size=test_batch_size
-# )
-
-# valid_gen = gen.flow_from_dataframe(
-#     valid_df,
-#     x_col='filepaths',
-#     y_col='labels',
-#     target_size=img_size,
-#     class_mode='categorical',
-#     color_mode='rgb',
-#     shuffle=True,
-#     batch_size=batch_size
-# )
-
 # create the model
 model = Sequential()
 model.add(Conv2D(64,(3,3), padding='same', activation='relu', input_shape=(IMG_H, IMG_W, 3)))
@@ -216,7 +124,7 @@ model.add(Dense(3, activation='sigmoid'))
 print('Compiling model...')
 
 opt = Adam(learning_rate=INIT_LR)
-model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 #train the model
 history = model.fit(
@@ -267,7 +175,6 @@ def graph():
     plt.legend(loc='upper right')
     plt.title('Training and validation loss')
     plt.show()
-    plt.savefig('plotCNN.png')
 
 graph()
 
@@ -296,7 +203,5 @@ def show_confusion_matrix():
     plt.xlabel('Predicted label')
     plt.tight_layout()
     plt.show()
-
-    plt.savefig("ConfusionMatrixCNN.png")
 
 show_confusion_matrix()
