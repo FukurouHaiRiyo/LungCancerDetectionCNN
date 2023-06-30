@@ -167,7 +167,7 @@ x = Dense(
 x=Dropout(rate=.45, seed=123)(x)        
 output=Dense(class_count, activation='softmax')(x)
 model=Model(inputs=base_model.input, outputs=output)
-model.compile(Adamax(lr=.001), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(Adamax(learning_rate=.001), loss='categorical_crossentropy', metrics=['accuracy'])
 
 def print_in_color(txt_msg,fore_tupple,back_tupple,):
     #prints the text_msg in the foreground color specified by fore_tupple with the background specified by back_tupple 

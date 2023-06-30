@@ -7,7 +7,7 @@ import numpy as np
 
 from keras.models import load_model
 # model = load_model('modelGAN-C.h5')
-model = load_model('/home/andrei/Desktop/ProiectLicenta/Python/modelCNN.h5')
+model = load_model('/home/andrei/Desktop/ProiectLicenta/Python/VGG19-fruits-99.00.h5')
 
 classes = {
     0: 'Lung adenocarcinoma',
@@ -30,7 +30,7 @@ sign_image = Label(top)
 def classify(file_path):
     global label_packed
     image = Image.open(file_path)
-    image = image.resize((180, 180))
+    image = image.resize((224, 224))
     image = np.expand_dims(image, axis=0)
     image = np.array(image)
     image = image/255.0
