@@ -19,4 +19,4 @@ Link to dataset: https://github.com/tampapath/lung_colon_image_set
 - [x] improve the network design
 - [x] Change bianry_crossentropy to loss_mean_squared_logarithmic_error
 - [ ] used GANs implementation, slight improvement
-- [ ] improving the model using VGG19 and a custom LRA implementation
+- [x] improving the model using VGG19 and a custom LRA implementation
