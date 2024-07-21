@@ -1,4 +1,5 @@
-# Final year project
+# Lung Cancer detection
+
 This project will use CNN to detect abnormal cells at lung level.
 
 Link to dataset: https://github.com/tampapath/lung_colon_image_set
