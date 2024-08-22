@@ -28,6 +28,14 @@ This application represents a significant step forward in improving the diagnosi
 Thank you for your interest in this project. I am dedicated to making important contributions in the fight against lung diseases and meeting medical needs.
 
 
+## Related
+
+Link to the dataset
+
+[Lung and colon cancer images set](https://github.com/tampapath/lung_colon_image_set)
+
+
+
 # Romanian version
 
 
@@ -66,4 +74,12 @@ Dezvoltarea acestei aplicații a fost inspirată de pasiunea mea pentru medicin�
 Această aplicație reprezintă un pas semnificativ în direcția îmbunătățirii diagnosticului și tratamentului bolilor pulmonare. Combinând medicina cu tehnologia de vârf, sper să ofer un instrument puternic și precis care să sprijine medicii în procesul de diagnosticare.
 
 Mulțumesc pentru interesul acordat acestui proiect. Sunt dedicat să aduc contribuții importante în lupta împotriva bolilor pulmonare și nevoilor medicale.
+
+
+## Related
+
+Link către dataset
+
+[Lung and colon cancer images set](https://github.com/tampapath/lung_colon_image_set)
+
 
